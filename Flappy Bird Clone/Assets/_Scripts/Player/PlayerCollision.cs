@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerCollision : MonoBehaviour
 {
     public event Action OnBirdDied;
-    public event Action OnScoreGained;
 
     bool isDead = false;
     private void OnCollisionEnter2D(Collision2D collision)
@@ -23,10 +22,9 @@ public class PlayerCollision : MonoBehaviour
     {
         if (isDead) return;
 
-        if (other.TryGetComponent(out ICollidable hitObject)) 
+        if (other.TryGetComponent(out ICollidable hitObject))
         {
-            
-            OnScoreGained?.Invoke();
+            hitObject.OnPlayerHit();
         }
     }
 
