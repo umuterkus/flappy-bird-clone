@@ -4,6 +4,7 @@ public class ScoreZone : MonoBehaviour , ICollidable
 {
     public void OnPlayerHit()
     {
-        GameEvents.RaiseScorePointPassed();
+        GameEvents.ScorePointPassed();
+        
     }
 }

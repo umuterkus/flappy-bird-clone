@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerCollision : MonoBehaviour
 {
-    public event Action OnBirdDied;
+    
 
     bool isDead = false;
     private void OnCollisionEnter2D(Collision2D collision)
@@ -31,8 +31,7 @@ public class PlayerCollision : MonoBehaviour
     private void Die()
     {
         isDead = true;
-        
-        OnBirdDied?.Invoke();
+        GameEvents.PlayerDeath();
     }
 
 }
