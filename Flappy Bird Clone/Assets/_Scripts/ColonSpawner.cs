@@ -25,7 +25,8 @@ public class ColonSpawner : MonoBehaviour
     }
     void Update()
     {
-       
+        if (!isSpawning) return;
+
         time += Time.deltaTime;
         if (time > spawnRate)
         {
@@ -37,23 +38,37 @@ public class ColonSpawner : MonoBehaviour
 
     private void OnEnable()
     {
-        
-        
+        GameEvents.OnStateChanged += HandleStateChanged;
     }
-
-    
 
     private void OnDisable()
     {
-       
-
+        GameEvents.OnStateChanged -= HandleStateChanged;
     }
 
-
-    private void OnGameStart()
+    private void HandleStateChanged(GameState state)
     {
-
-        
+        if (state == GameState.Playing)
+        {
+            isSpawning = true;
+        }
+        else if (state == GameState.MainMenu || state == GameState.WaitScreen)
+        {
+            // MENÜYE DÖNÜNCE HER ÞEYÝ SIFIRLA
+            isSpawning = false;
+            ResetAllColons();
+        }
+        else
+        {
+            isSpawning = false;
+        }
+    }
+    private void ResetAllColons()
+    {
+        foreach (GameObject colon in colonPool)
+        {
+            colon.SetActive(false);
+        }
     }
     private void CreatePool()
     {

@@ -63,7 +63,19 @@ public class GameManager : MonoBehaviour
             ChangeState(GameState.Playing);
         }
     }
+    // GameManager.cs içine
 
+    public void RestartGame()
+    {
+        // Sahneyi yüklemek yerine direkt WaitScreen'e (Týkla Baþla) veya Menüye atýyoruz.
+        // Bu state deðiþimi Spawner'ý ve Player'ý resetleyecek (yukarýdaki kodlar sayesinde).
+        ChangeState(GameState.WaitScreen);
+    }
+
+    public void GoToMainMenu()
+    {
+        ChangeState(GameState.MainMenu);
+    }
     public void ChangeState(GameState newState)
     {
         CurrentState = newState;
@@ -111,9 +123,4 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void GoToMainMenu()
-    {
-        Time.timeScale = 1f; // Sahne yüklemeden önce zamaný düzeltmek önemlidir
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
 }

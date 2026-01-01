@@ -18,18 +18,32 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
-
         GameEvents.OnPlayerDeath += DisableMovement;
 
+        // EKLEDÝÐÝM KISIM: Durum deðiþikliðini dinle
+        GameEvents.OnStateChanged += OnGameStateChanged;
     }
 
     private void OnDisable()
     {
-
         GameEvents.OnPlayerDeath -= DisableMovement;
 
+        // EKLEDÝÐÝM KISIM: Abonelikten çýk
+        GameEvents.OnStateChanged -= OnGameStateChanged;
     }
- 
+
+    // EKLEDÝÐÝM KISIM: GameManager "Playing" dediðinde senin fonksiyonunu çalýþtýrýr
+    private void OnGameStateChanged(GameState state)
+    {
+        if (state == GameState.Playing)
+        {
+            EnableMovement();
+        }
+        else if (state == GameState.MainMenu || state == GameState.WaitScreen)
+        {
+            ResetPlayer();
+        }
+    }
 
     void Update()
     {
@@ -45,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
     {
         isInputEnabled = true;
         SetPhysicsActive(true);
-      
+
         rb.linearVelocity = Vector2.up * jumpForce;
         Debug.Log("Player: Hareket Aktif!");
     }
@@ -53,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
     public void DisableMovement()
     {
         isInputEnabled = false;
-        SetPhysicsActive(false); 
+        SetPhysicsActive(false);
         Debug.Log("Player: Hareket Pasif.");
     }
 
