@@ -1,9 +1,14 @@
 using UnityEngine;
+using DG.Tweening;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float jumpForce = 5f;
+    [SerializeField] private float jumpDuration = 0.15f; // Zýplama rotasyon hýzý
+    [SerializeField] private float fallDuration = 0.8f;
+    [SerializeField] private float upRotate = 25f;
+    [SerializeField] private float downRotate = 90f;
     private Rigidbody2D rb;
     private bool isInputEnabled = false;
     private Vector3 initialPosition;
@@ -51,16 +56,31 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.W))
         {
-            rb.linearVelocity = Vector2.up * jumpForce;
+            Jump();
+
         }
     }
+    private void Jump()
+    {
+      
+        rb.linearVelocity = Vector2.up * jumpForce; 
 
+        transform.DOKill();
+
+        transform.DORotate(new Vector3(0, 0, 25), jumpDuration)
+            .OnComplete(() => // Adým A bittiðinde bu bloðu çalýþtýr
+            {
+                // Adým B: Yukarý bakma bitince, yavaþça aþaðý süzül (-90 derece)
+                // Ease.InQuad: Yavaþ baþla, giderek hýzlan (Yer çekimi hissi verir)
+                transform.DORotate(new Vector3(0, 0, -downRotate), fallDuration).SetEase(Ease.InQuad);
+            });
+    }
     public void EnableMovement()
     {
         isInputEnabled = true;
         SetPhysicsActive(true);
 
-        rb.linearVelocity = Vector2.up * jumpForce;
+        Jump();
         Debug.Log("Player: Hareket Aktif!");
     }
 
@@ -68,11 +88,14 @@ public class PlayerMovement : MonoBehaviour
     {
         isInputEnabled = false;
         SetPhysicsActive(false);
+        transform.DOKill();
         Debug.Log("Player: Hareket Pasif.");
     }
 
     public void ResetPlayer()
     {
+        transform.DOKill();
+
         isInputEnabled = false;
         transform.position = initialPosition;
         transform.rotation = Quaternion.identity;

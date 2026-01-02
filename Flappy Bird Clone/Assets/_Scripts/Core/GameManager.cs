@@ -100,7 +100,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.GameOverScreen:
-                Time.timeScale = 0f;
+                Time.timeScale = 1f;
                 Debug.Log("Durum: Oyun Bitti");
                 break;
 
