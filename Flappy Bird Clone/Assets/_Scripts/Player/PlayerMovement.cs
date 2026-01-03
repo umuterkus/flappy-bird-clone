@@ -68,10 +68,9 @@ public class PlayerMovement : MonoBehaviour
         transform.DOKill();
 
         transform.DORotate(new Vector3(0, 0, 25), jumpDuration)
-            .OnComplete(() => // Adým A bittiðinde bu bloðu çalýþtýr
+            .OnComplete(() => 
             {
-                // Adým B: Yukarý bakma bitince, yavaþça aþaðý süzül (-90 derece)
-                // Ease.InQuad: Yavaþ baþla, giderek hýzlan (Yer çekimi hissi verir)
+             
                 transform.DORotate(new Vector3(0, 0, -downRotate), fallDuration).SetEase(Ease.InQuad);
             });
     }

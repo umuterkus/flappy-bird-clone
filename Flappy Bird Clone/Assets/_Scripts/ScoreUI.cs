@@ -1,14 +1,13 @@
 using UnityEngine;
-using TMPro; // TextMeshPro kütüphanesi
-
+using TMPro;
+using DG.Tweening;
 public class ScoreUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI scoreText; // Inspector'dan ata
-    [SerializeField] private TextMeshProUGUI gameOverScoreText; // Oyun sonu ekranýndaki skor (Opsiyonel)
-
+    [SerializeField] private TextMeshProUGUI scoreText; 
+    [SerializeField] private TextMeshProUGUI gameOverScoreText; 
     private void OnEnable()
     {
-        // ScoreManager'ýn kendi eventini dinliyoruz
+        
         ScoreManager.OnScoreChanged += UpdateScoreText;
     }
 
@@ -19,10 +18,12 @@ public class ScoreUI : MonoBehaviour
 
     private void UpdateScoreText(int newScore)
     {
-        // Oyun içi skoru güncelle
+
         if (scoreText != null)
         {
             scoreText.text = newScore.ToString();
+            scoreText.transform.DORewind(); //resets old anim
+            scoreText.transform.DOPunchScale(new Vector3(0.8f, 0.8f, 0.8f), 0.4f, 10, 0.5f); 
         }
 
         // Eðer oyun sonu paneli için de bir text atadýysan onu da güncelle
