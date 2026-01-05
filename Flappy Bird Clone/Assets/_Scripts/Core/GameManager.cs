@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// Enum'ý en üste veya ayrý bir dosyaya koyabilirsin
 public enum GameState
 {
     MainMenu,
@@ -15,10 +14,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     public GameState CurrentState { get; private set; }
-
+    
+    [SerializeField] private GameObject playerObject;
     private void Awake()
     {
-        // Singleton Yapýsý
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -28,14 +27,12 @@ public class GameManager : MonoBehaviour
     }
 
     private void Start()
-    {
-        // Oyunu Main Menu ile baþlatýyoruz
+    { 
         ChangeState(GameState.MainMenu);
     }
 
     private void OnEnable()
     {
-        // Sadece ölümü dinlememiz yeterli, çünkü ölüm state deðiþtirir.
         GameEvents.OnPlayerDeath += HandlePlayerDeath;
     }
 
@@ -63,12 +60,9 @@ public class GameManager : MonoBehaviour
             ChangeState(GameState.Playing);
         }
     }
-    // GameManager.cs içine
 
     public void RestartGame()
     {
-        // Sahneyi yüklemek yerine direkt WaitScreen'e (Týkla Baþla) veya Menüye atýyoruz.
-        // Bu state deðiþimi Spawner'ý ve Player'ý resetleyecek (yukarýdaki kodlar sayesinde).
         ChangeState(GameState.WaitScreen);
     }
 
@@ -79,7 +73,7 @@ public class GameManager : MonoBehaviour
     public void ChangeState(GameState newState)
     {
         CurrentState = newState;
-
+       
 
         GameEvents.StateChanged(newState);
 
@@ -92,35 +86,23 @@ public class GameManager : MonoBehaviour
             case GameState.WaitScreen:
                 Time.timeScale = 1f;
                 Debug.Log("Durum: Bekleniyor... Týkla Baþla");
+                GameEvents.GameReset();
                 break;
 
             case GameState.Playing:
                 Time.timeScale = 1f;
+                GameEvents.GameStart();
                 Debug.Log("Durum: Oyun Oynanýyor");
                 break;
 
             case GameState.GameOverScreen:
                 Time.timeScale = 1f;
+                GameEvents.GameEnd();
                 Debug.Log("Durum: Oyun Bitti");
                 break;
-
-            case GameState.PauseMenu:
-                Time.timeScale = 0f;
-                Debug.Log("Game Paused");
-                break;
         }
     }
 
-    public void TogglePauseGame()
-    {
-        if (CurrentState == GameState.Playing)
-        {
-            ChangeState(GameState.PauseMenu);
-        }
-        else if (CurrentState == GameState.PauseMenu)
-        {
-            ChangeState(GameState.Playing);
-        }
-    }
+  
 
 }

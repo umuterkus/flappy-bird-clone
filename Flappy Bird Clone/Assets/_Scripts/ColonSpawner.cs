@@ -21,7 +21,6 @@ public class ColonSpawner : MonoBehaviour
     void Start()
     {
         CreatePool();
-        time = spawnRate; //early spawn first colon
     }
     void Update()
     {
@@ -38,31 +37,27 @@ public class ColonSpawner : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnStateChanged += HandleStateChanged;
+        GameEvents.OnGameStart += StartSpawning;
+        GameEvents.OnGameReset += ResetSpawning;
+        GameEvents.OnGameEnd += StopSpawning;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnStateChanged -= HandleStateChanged;
+        GameEvents.OnGameStart -= StartSpawning;
+        GameEvents.OnGameReset -= ResetSpawning;
+        GameEvents.OnGameEnd -= StopSpawning;
     }
+    private void StartSpawning() => isSpawning = true;
+    private void StopSpawning() => isSpawning = false;
 
-    private void HandleStateChanged(GameState state)
+    private void ResetSpawning()
     {
-        if (state == GameState.Playing)
-        {
-            isSpawning = true;
-        }
-        else if (state == GameState.MainMenu || state == GameState.WaitScreen)
-        {
-            // MENÜYE DÖNÜNCE HER ÞEYÝ SIFIRLA
-            isSpawning = false;
-            ResetAllColons();
-        }
-        else
-        {
-            isSpawning = false;
-        }
+        isSpawning = false;
+        ResetAllColons();
+        time = spawnRate;
     }
+    
     private void ResetAllColons()
     {
         foreach (GameObject colon in colonPool)
@@ -88,10 +83,8 @@ public class ColonSpawner : MonoBehaviour
         
         if (colon != null)
         {
-            // Turn it on (make it visible)
             colon.SetActive(true);
 
-            // Move it to the spawn position
             colon.transform.position = new Vector3(12, RandomGenerator(), 0);
         }
 

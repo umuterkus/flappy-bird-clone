@@ -1,56 +1,49 @@
 using UnityEngine;
+using DG.Tweening; // DOTween kütüphanesi
 
 public class Ground : MonoBehaviour, ICollidable
 {
     [SerializeField] private float moveSpeed = 3f;
-
     [SerializeField] private float groundSize = 20f;
 
-    private Vector3 startTransform;
-
-    
-    private bool isMoveable = true;
-
-    private void OnEnable()
-    {
-        GameEvents.OnStateChanged += HandleStateChanged;
-    }
-
-    private void OnDisable()
-    {
-        GameEvents.OnStateChanged -= HandleStateChanged;
-    }
-
+    private Tween moveTween;
     private void Start()
     {
-        startTransform = transform.position;
+        StartInfiniteMovement();
     }
-    private void HandleStateChanged(GameState state)
+    private void OnEnable()
     {
-        if (state == GameState.GameOverScreen)
-        {
-            isMoveable = false;
-
-        }
+        GameEvents.OnPlayerDeath += OnPlayerDeath;
+        GameEvents.OnGameReset += OnGameReset;
     }
-    private void Update()
+    private void OnDisable()
     {
-        if (!isMoveable) { return;  }
-        transform.Translate(Vector3.left * Time.deltaTime * moveSpeed);
-
-        if (transform.position.x < startTransform.x - groundSize)
-        {
-            TeleportGround();
-        }
+        GameEvents.OnPlayerDeath -= OnPlayerDeath;
+        moveTween?.Kill();
     }
 
-    private void TeleportGround()
+    private void OnGameReset()
     {
-      
-        transform.position = startTransform;
+        moveTween?.Play();
     }
+    private void OnPlayerDeath()
+    {
+        moveTween?.Pause();
+    }
+    private void StartInfiniteMovement()
+    {
+     
+        float duration = groundSize / moveSpeed;
+        float targetX = transform.position.x - groundSize;
+
+        moveTween = transform.DOMoveX(targetX, duration)
+            .SetEase(Ease.Linear)         
+            .SetLoops(-1, LoopType.Restart); 
+    }
+
 
     public void OnPlayerHit()
     {
+        
     }
 }

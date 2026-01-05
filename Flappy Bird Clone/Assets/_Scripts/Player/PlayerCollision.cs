@@ -10,22 +10,19 @@ public class PlayerCollision : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnStateChanged += HandleStateChanged;
+        GameEvents.OnGameReset += RevivePlayer;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnStateChanged -= HandleStateChanged;
+        GameEvents.OnGameReset -= RevivePlayer;
     }
 
-    private void HandleStateChanged(GameState state)
+    private void RevivePlayer()
     {
-        // Menüye dönüldüðünde veya oyun yeniden baþlama aþamasýna geldiðinde
-        if (state == GameState.MainMenu || state == GameState.WaitScreen)
-        {
-            isDead = false; // Kuþ artýk canlý
-        }
+        isDead = false;
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (isDead) return;
@@ -49,6 +46,7 @@ public class PlayerCollision : MonoBehaviour
 
     private void Die()
     {
+       
         isDead = true;
         GameEvents.PlayerDeath();
     }

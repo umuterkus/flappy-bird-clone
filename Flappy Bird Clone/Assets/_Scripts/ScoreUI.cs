@@ -26,7 +26,6 @@ public class ScoreUI : MonoBehaviour
             scoreText.transform.DOPunchScale(new Vector3(0.8f, 0.8f, 0.8f), 0.4f, 10, 0.5f); 
         }
 
-        // Eðer oyun sonu paneli için de bir text atadýysan onu da güncelle
         if (gameOverScoreText != null)
         {
             gameOverScoreText.text = "Score: " + newScore.ToString();

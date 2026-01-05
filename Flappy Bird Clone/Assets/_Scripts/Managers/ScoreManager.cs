@@ -11,7 +11,7 @@ public class ScoreManager : MonoBehaviour
     {
         GameEvents.OnScorePointPassed += IncreaseScore;
 
-        GameEvents.OnStateChanged += HandleStateChanged;
+        GameEvents.OnGameReset += ResetScore;
 
         Debug.Log("[ScoreManager] Events Subscribed");
     }
@@ -19,7 +19,7 @@ public class ScoreManager : MonoBehaviour
     private void OnDisable()
     {
         GameEvents.OnScorePointPassed -= IncreaseScore;
-        GameEvents.OnStateChanged -= HandleStateChanged;
+        GameEvents.OnGameReset -= ResetScore;
 
         Debug.Log("[ScoreManager] Events Unsubscribed");
     }
@@ -30,14 +30,6 @@ public class ScoreManager : MonoBehaviour
         OnScoreChanged?.Invoke(currentScore);
 
         Debug.Log($"[ScoreManager] Score: {currentScore}");
-    }
-
-    private void HandleStateChanged(GameState state)
-    {
-        if (state == GameState.MainMenu || state == GameState.WaitScreen)
-        {
-            ResetScore();
-        }
     }
 
     private void ResetScore()

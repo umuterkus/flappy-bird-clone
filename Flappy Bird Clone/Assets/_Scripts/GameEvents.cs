@@ -4,7 +4,6 @@ using UnityEngine;
 public static class GameEvents
 {
 
-    //GAME MANAGER
     public static event Action<GameState> OnStateChanged;
 
     public static void StateChanged(GameState state)
@@ -25,5 +24,13 @@ public static class GameEvents
     {
         OnScorePointPassed?.Invoke();
     }
+    
+    public static event Action OnGameReset;
+    public static void GameReset() => OnGameReset?.Invoke();
 
+    public static event Action OnGameStart;
+    public static void GameStart() => OnGameStart?.Invoke();
+
+    public static event Action OnGameEnd;
+    public static void GameEnd() => OnGameEnd?.Invoke();
 }
