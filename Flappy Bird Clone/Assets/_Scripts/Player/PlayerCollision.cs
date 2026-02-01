@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerCollision : MonoBehaviour
 {
-    
-
     bool isDead = false;
 
     private void OnEnable()
@@ -46,7 +44,6 @@ public class PlayerCollision : MonoBehaviour
 
     private void Die()
     {
-       
         isDead = true;
         GameEvents.PlayerDeath();
     }

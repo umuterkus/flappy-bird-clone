@@ -4,6 +4,6 @@ public class ColonColider : MonoBehaviour, ICollidable
 {
     public void OnPlayerHit()
     {
-        Debug.Log("ust duvar");
+        Debug.Log("Game Over!");
     }
 }

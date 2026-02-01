@@ -85,20 +85,17 @@ public class GameManager : MonoBehaviour
 
             case GameState.WaitScreen:
                 Time.timeScale = 1f;
-                Debug.Log("Durum: Bekleniyor... Týkla Baþla");
                 GameEvents.GameReset();
                 break;
 
             case GameState.Playing:
                 Time.timeScale = 1f;
                 GameEvents.GameStart();
-                Debug.Log("Durum: Oyun Oynanýyor");
                 break;
 
             case GameState.GameOverScreen:
                 Time.timeScale = 1f;
                 GameEvents.GameEnd();
-                Debug.Log("Durum: Oyun Bitti");
                 break;
         }
     }

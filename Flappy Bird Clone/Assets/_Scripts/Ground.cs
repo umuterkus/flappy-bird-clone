@@ -1,5 +1,5 @@
 using UnityEngine;
-using DG.Tweening; // DOTween kütüphanesi
+using DG.Tweening;
 
 public class Ground : MonoBehaviour, ICollidable
 {
@@ -32,7 +32,6 @@ public class Ground : MonoBehaviour, ICollidable
     }
     private void StartInfiniteMovement()
     {
-     
         float duration = groundSize / moveSpeed;
         float targetX = transform.position.x - groundSize;
 
@@ -41,9 +40,8 @@ public class Ground : MonoBehaviour, ICollidable
             .SetLoops(-1, LoopType.Restart); 
     }
 
-
     public void OnPlayerHit()
     {
-        
+        Debug.Log("Game Over");   
     }
 }

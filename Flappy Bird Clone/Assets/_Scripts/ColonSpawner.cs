@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class ColonSpawner : MonoBehaviour
 {
-
     [SerializeField] private GameObject colonPrefab;
     [SerializeField] private float minHeight = 2;
     [SerializeField] private float maxHeight = 2;
@@ -57,7 +56,6 @@ public class ColonSpawner : MonoBehaviour
         ResetAllColons();
         time = spawnRate;
     }
-    
     private void ResetAllColons()
     {
         foreach (GameObject colon in colonPool)
@@ -74,9 +72,6 @@ public class ColonSpawner : MonoBehaviour
             colonPool.Add(colon);
         }
     }
-
-    
-
     void SpawnColon()
     {
         GameObject colon = GetInactiveColon();

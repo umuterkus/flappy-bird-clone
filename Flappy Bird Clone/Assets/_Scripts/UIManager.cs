@@ -1,8 +1,9 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    [Header("Paneller")]
+    [Header("UIPanels")]
     [SerializeField] private GameObject mainMenuPanel;
     [SerializeField] private GameObject waitScreenPanel;
     [SerializeField] private GameObject inGamePanel;
@@ -18,19 +19,7 @@ public class UIManager : MonoBehaviour
         GameEvents.OnStateChanged -= UpdateUI;
     }
 
-    private void Update()
-    {
-        if (GameManager.Instance.CurrentState == GameState.WaitScreen)
-        {
-       
-            if (Input.GetMouseButtonDown(0))
-            {
-            
-                GameManager.Instance.ConfirmStartGame();
-            }
-        }
-    }
-
+    
 
     private void UpdateUI(GameState newState)
     {
@@ -55,7 +44,9 @@ public class UIManager : MonoBehaviour
                 break;
 
             case GameState.GameOverScreen:
-                gameOverPanel.SetActive(true); 
+                gameOverPanel.SetActive(true);
+                gameOverPanel.transform.localScale = Vector3.zero;
+                gameOverPanel.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
                 break;
         }
     }

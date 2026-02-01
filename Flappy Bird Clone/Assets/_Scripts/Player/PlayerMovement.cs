@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float fallDuration = 0.8f;  
     [SerializeField] private float upRotate = 25f;
     [SerializeField] private float downRotate = 90f;
-
+    
     private Rigidbody2D rb;
     private bool isInputEnabled = false;
     private Vector3 initialPosition;
@@ -22,11 +22,20 @@ public class PlayerMovement : MonoBehaviour
         initialPosition = transform.position;
         defaultScale = transform.localScale; 
 
-    
+        
         isInputEnabled = false;
         SetPhysicsActive(false);
     }
 
+    void Update()
+    {
+        if (!isInputEnabled) return;
+
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.W))
+        {
+            Jump();
+        }
+    }
     private void OnEnable()
     {
 
@@ -72,17 +81,6 @@ public class PlayerMovement : MonoBehaviour
            
                 gameObject.SetActive(false);
             });
-    }
-
-
-    void Update()
-    {
-        if (!isInputEnabled) return;
-
-        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.W))
-        {
-            Jump();
-        }
     }
 
     private void Jump()
